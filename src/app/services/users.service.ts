@@ -7,7 +7,9 @@ import { Api,
         SendEmailVerification , 
         ConfirmEmailVerification, 
         GetUserData, 
-        SendPasswordResetEmail } from '../config';
+        SendPasswordResetEmail,
+        VerifyPasswordResetCode,
+        ConfirmPasswordReset } from '../config';
 
 import { UsersModel } from '../models/users.model';
 
@@ -24,6 +26,8 @@ export class UsersService {
 	private confirmEmailVerification:string = ConfirmEmailVerification.url;
   private getUserData:string = GetUserData.url;
   private sendPasswordResetEmail:string = SendPasswordResetEmail.url;
+  private verifyPasswordResetCode:string = VerifyPasswordResetCode.url;
+  private confirmPasswordReset:string = ConfirmPasswordReset.url;
 
   	constructor(private http:HttpClient) { }
 
@@ -160,4 +164,19 @@ export class UsersService {
         return this.http.post(`${this.sendPasswordResetEmail}`,body);
     }
 
+
+
+     //Confirmar el cambio de la contraseña
+
+    verifyPasswordResetCodeFnc(body:object){
+
+        return this.http.post(`${this.verifyPasswordResetCode}`,body);
+    }
+
+    //Para enviar nueva contraseña
+
+    confirmPasswordResetFnc(body:object){
+
+        return this.http.post(`${this.confirmPasswordReset}`,body);
+    }
 }

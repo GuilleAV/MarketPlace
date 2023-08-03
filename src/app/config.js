@@ -55,3 +55,20 @@ export let SendPasswordResetEmail = {
 
 	url:'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBbGc4thd67KjwEUcYke9_34Sk0FijtpOY'
 }
+
+//Exportamos el endpoint para confirmar el cambio de la contraseña
+
+export let VerifyPasswordResetCode = {
+
+	url:'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyBbGc4thd67KjwEUcYke9_34Sk0FijtpOY'
+}
+
+
+//Exportamos el endpoint para enviar la nueva contraseña 
+
+export let ConfirmPasswordReset = {
+
+	url:'https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=AIzaSyBbGc4thd67KjwEUcYke9_34Sk0FijtpOY'
+}
+
+

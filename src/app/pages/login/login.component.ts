@@ -8,6 +8,9 @@ import { UsersService } from '../../services/users.service';
 
 import { ActivatedRoute } from '@angular/router';
 
+declare var jQuery:any;
+declare var $:any;
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -110,7 +113,53 @@ export class LoginComponent implements OnInit {
 			})
 
 		}
+
+		//Confirmar cambio de contraseña
+
+		if(this.activatedRoute.snapshot.queryParams["oobCode"] != undefined && 
+		  this.activatedRoute.snapshot.queryParams["mode"] == "resetPassword" ){
+
+			let body = { 
+
+				oobCode : this.activatedRoute.snapshot.queryParams["oobCode"]
+			}
+
+				this.usersService.verifyPasswordResetCodeFnc(body)
+				.subscribe(resp => {
+
+					if(resp["requestType"] == "PASSWORD_RESET"){
+
+						$("#newPassword").modal();
+
+					}
+
+				
+			})
+
+
+			}
 	  }
+
+	  //Validacion de expresion regular del formulario
+
+  	validate(input){
+
+  		let pattern;
+  		
+		if($(input).attr("name")=="password"){
+
+			pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/
+  			
+  		}
+
+  		if(!pattern.test(input.value)){
+
+  			$(input).parent().addClass('was-validated')
+
+  			input.value = "";
+  		}
+
+  	}
 
 
 	  	//Envio del formulario
@@ -238,11 +287,39 @@ export class LoginComponent implements OnInit {
 
 				if(resp["email"] == value){
 
-					Sweetalert("success","Check your email to change the password","login")
+					Sweetalert.fnc("success","Check your email to change the password","login")
 				}
 			})
 
 
 		}
 
+
+
+		// Enviar nueva contraseña
+
+		newPassword(value){
+
+			if(value != ""){
+
+				Sweetalert.fnc("loading","Loading...",null)
+
+				let body ={
+
+					oobCode : this.activatedRoute.snapshot.queryParams["oobCode"],
+					newPassword: value
+				}
+
+
+				this.usersService.confirmPasswordResetFnc(body)
+				.subscribe(resp => {
+
+					if(resp["requestType"] == "PASSWORD_RESET"){
+
+						Sweetalert.fnc("success","Password change successful, login now","login")
+					}
+				})
+
+			}
+		}
 }
